@@ -16,10 +16,20 @@ Generate professional fashion photography by combining multiple clothing items u
 - Python 3.8+
 - Azure CLI authenticated (`az login`)
 
-## Installation
+## Quick Start with GitHub Codespaces
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SyChell/VirtualTryOn)
+
+1. Click the button above to open in Codespaces
+2. Wait for the environment to build
+3. Authenticate to Azure: `az login --use-device-code`
+4. Update the `AOAI_API_BASE` in the notebook with your Azure OpenAI endpoint
+5. Run the notebook!
+
+## Local Installation
 
 ```bash
-pip install azure-identity requests
+pip install -r requirements.txt
 ```
 
 ## Usage
