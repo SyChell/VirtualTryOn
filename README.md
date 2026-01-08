@@ -22,8 +22,11 @@ Generate professional fashion photography by combining multiple clothing items u
 
 1. Click the button above to open in Codespaces
 2. Wait for the environment to build
-3. Authenticate to Azure: `az login --use-device-code`
-4. Update the `AOAI_API_BASE` in the notebook with your Azure OpenAI endpoint
+3. Copy `.env.example` to `.env` and fill in your Azure OpenAI details:
+   ```bash
+   cp .env.example .env
+   ```
+4. Authenticate to Azure: `az login --use-device-code`
 5. Run the notebook!
 
 ## Local Installation
@@ -40,13 +43,20 @@ pip install -r requirements.txt
 
 ## Configuration
 
-Update the following variables in the notebook:
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
 
-```python
-IMAGES_FOLDER = "./images"  # Folder containing clothing item images
-AOAI_API_BASE = "https://your-resource.cognitiveservices.azure.com"
-AOAI_DEPLOYMENT_NAME = "gpt-image-1"
-```
+2. Edit `.env` with your Azure OpenAI settings:
+   ```
+   AOAI_API_BASE=https://your-resource.cognitiveservices.azure.com
+   AOAI_DEPLOYMENT_NAME=gpt-image-1
+   AOAI_API_VERSION=2025-04-01-preview
+   IMAGES_FOLDER=./images
+   ```
+
+> ⚠️ **Security Note:** Never commit your `.env` file. It's already in `.gitignore`.
 
 ## How It Works
 

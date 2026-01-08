@@ -15,9 +15,11 @@ build/
 .ipynb_checkpoints/
 *.ipynb_checkpoints
 
-# Environment variables
+# Environment variables (NEVER commit these)
 .env
 .env.local
+.env.production
+.env.development
 
 # Output images (generated files)
 output_*.jpeg
