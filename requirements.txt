@@ -1,4 +1,3 @@
 azure-identity
 requests
-ipykernel
 python-dotenv

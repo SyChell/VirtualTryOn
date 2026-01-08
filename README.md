@@ -1,78 +1,126 @@
 # Virtual Try-On with Azure OpenAI GPT-Image-1
 
-Generate professional fashion photography by combining multiple clothing items using Azure OpenAI's GPT-Image-1 model.
+Generate professional fashion photography by combining multiple clothing items using Azure OpenAI's GPT-Image-1 Image Edit API.
 
 ## Features
 
 - **Dynamic Image Loading**: Automatically discovers all clothing item images in a folder
 - **Smart Prompt Generation**: Creates prompts based on image filenames (e.g., `skirt.jpg` → extracts only the skirt)
 - **Professional Output**: Generates high-quality e-commerce style fashion photos
-- **Multiple Input Support**: Combines multiple clothing items into a single outfit
+- **Multiple Input Support**: Combines multiple clothing items into a single outfit using the Image Edit API
 
 ## Prerequisites
 
-- Azure subscription with access to Azure OpenAI
-- GPT-Image-1 model deployed in Azure AI Foundry
-- Python 3.8+
-- Azure CLI authenticated (`az login`)
+### Azure Resources
+- Azure subscription
+- **Azure OpenAI resource** with GPT-Image-1 model deployed
 
-## Quick Start with GitHub Codespaces
+### Local Environment
+- Python 3.10+
+- Azure CLI installed and authenticated (`az login`)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/SyChell/VirtualTryOn)
-
-1. Click the button above to open in Codespaces
-2. Wait for the environment to build
-3. Copy `.env.example` to `.env` and fill in your Azure OpenAI details:
-   ```bash
-   cp .env.example .env
-   ```
-4. Authenticate to Azure: `az login --use-device-code`
-5. Run the notebook!
-
-## Local Installation
-
+### Required Python Packages
 ```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+## Quick Start
 
-1. Place your clothing item images in the `images/` folder
-2. Name each image after the clothing item (e.g., `pullover.jpg`, `skirt.jpg`, `boots.jpg`)
-3. Run the Jupyter notebook `Main.ipynb`
+### 1. Clone and Setup
 
-## Configuration
+```bash
+git clone https://github.com/SyChell/VirtualTryOn.git
+cd VirtualTryOn
+pip install -r requirements.txt
+```
 
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
+### 2. Configure Environment
 
-2. Edit `.env` with your Azure OpenAI settings:
-   ```
-   AOAI_API_BASE=https://your-resource.cognitiveservices.azure.com
-   AOAI_DEPLOYMENT_NAME=gpt-image-1
-   AOAI_API_VERSION=2025-04-01-preview
-   IMAGES_FOLDER=./images
-   ```
+Copy the example environment file and fill in your Azure details:
 
-> ⚠️ **Security Note:** Never commit your `.env` file. It's already in `.gitignore`.
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+# Azure OpenAI Configuration
+AOAI_API_BASE=https://your-resource.cognitiveservices.azure.com
+AOAI_DEPLOYMENT_NAME=gpt-image-1
+AOAI_API_VERSION=2025-04-01-preview
+
+# Image Configuration
+IMAGES_FOLDER=./images
+```
+
+### 3. Authenticate to Azure
+
+```bash
+az login
+```
+
+### 4. Add Clothing Images
+
+Place your clothing item images in the `images/` folder (or your configured `IMAGES_FOLDER`):
+- Name each image after the clothing item: `cap.jpg`, `jeans.jpg`, `sneakers.jpg`, `t-shirt.png`
+- Supported formats: `.jpg`, `.jpeg`, `.png`
+
+### 5. Run
+
+```bash
+python agent.py
+```
 
 ## How It Works
 
-1. Scans the images folder for clothing item images
-2. Builds a dynamic prompt based on filenames
-3. Sends all images to Azure OpenAI GPT-Image-1 API
-4. Generates a combined outfit image with a model wearing all items
+The agent uses Azure OpenAI's **Image Edit API** (`/images/edits`) which accepts multiple input images. The API combines the clothing items from each input image into a single generated outfit.
+
+**Pipeline:**
+1. Scans `IMAGES_FOLDER` for clothing images
+2. Sends all images to the Image Edit API with a prompt
+3. Saves the generated outfit to `generated_images/generated_outfit.jpeg`
+
+## Project Structure
+
+```
+VirtualTryOn/
+├── Main.ipynb          # Jupyter notebook for interactive development
+├── agent.py            # Image processing pipeline
+├── .env                # Environment configuration (not committed)
+├── .env.example        # Example environment file
+├── requirements.txt    # Python dependencies
+├── images/             # Input clothing images
+│   ├── cap.jpg
+│   ├── jeans.jpg
+│   ├── sneakers.jpg
+│   └── t-shirt.jpg
+├── generated_images/   # Output folder
+│   └── generated_outfit.jpeg
+└── README.md
+```
 
 ## Example
 
-Input images:
-- `pullover.jpg` - A sweater/top
-- `skirt.jpg` - A skirt
-- `boots.jpg` - Boots
+**Input images:**
+- `cap.jpg` - A baseball cap
+- `jeans.jpg` - Blue jeans
+- `sneakers.jpg` - White sneakers
+- `t-shirt.jpg` - A casual t-shirt
 
-Output: Professional fashion photo of a model wearing all three items together.
+**Output:** Professional fashion photo of a model wearing all four items as a complete outfit.
+
+## Troubleshooting
+
+### "AOAI_API_BASE environment variable is required"
+Make sure your `.env` file has the correct Azure OpenAI endpoint.
+
+### Authentication errors
+Run `az login` and ensure you're signed into the correct Azure subscription.
+
+### Image generation fails
+- Verify GPT-Image-1 is deployed in your Azure OpenAI resource
+- Check that `AOAI_API_BASE` points to your Azure OpenAI endpoint
 
 ## License
 
