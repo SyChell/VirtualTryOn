@@ -162,6 +162,28 @@ class VirtualTryOnApp {
         return `/static/products/${category}/${product.image}`;
     }
 
+    getColorHex(colorName) {
+        // Map German color names to hex values
+        const colorMap = {
+            'Schwarz': '#1a1a1a',
+            'Weiß': '#f5f5f5',
+            'Blau': '#2563eb',
+            'Dunkelblau': '#1e3a5f',
+            'Indigoblau': '#3f51b5',
+            'Beige': '#d4b896',
+            'Creme': '#fffdd0',
+            'Braun': '#8b4513',
+            'Koralle': '#ff7f50',
+            'Orange': '#ff6b35',
+            'Bunt': 'linear-gradient(135deg, #ff6b6b, #4ecdc4, #ffe66d)',
+            'Grau': '#808080',
+            'Rosa': '#ffb6c1',
+            'Rot': '#dc2626',
+            'Grün': '#22c55e'
+        };
+        return colorMap[colorName] || '#ccc';
+    }
+
     createProductCard(product) {
         const isSelected = this.selectedItems.has(product.id);
         const hasDiscount = product.discount && product.originalPrice;
@@ -186,6 +208,7 @@ class VirtualTryOnApp {
                 <div class="product-info">
                     <div class="product-brand">${product.brand}</div>
                     <div class="product-name">${product.name}</div>
+                    ${product.color ? `<div class="product-color"><span class="color-dot" style="background-color: ${this.getColorHex(product.color)}"></span>${product.color}</div>` : ''}
                     <div class="product-price">
                         ${hasDiscount ? `<span class="price-original">${product.originalPrice.toFixed(2).replace('.', ',')} €</span>` : ''}
                         <span class="price-current ${hasDiscount ? 'price-sale' : ''}">${product.price.toFixed(2).replace('.', ',')} €</span>

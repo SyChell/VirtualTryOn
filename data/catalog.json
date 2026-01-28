@@ -6,6 +6,7 @@
       "brand": "Boss",
       "price": 129.00,
       "originalPrice": 249.00,
+      "color": "Creme",
       "image": "Jeans-aus-cremefarbenem-Denim-mit-weitem-Beinverlauf-und Bundfalten-auf-der-Vorderseite.jpg",
       "sizes": ["26/32", "27/32", "28/32", "29/32"]
     },
@@ -15,6 +16,7 @@
       "brand": "Boss",
       "price": 199.95,
       "originalPrice": null,
+      "color": "Blau",
       "image": "Blaue-Slim-Fit-Jeans-aus-bequemem-Stretch-Denim.jpg",
       "sizes": ["25/30", "25/32", "26/28", "26/30", "26/32", "27/28", "27/30", "27/32", "28/28", "28/30", "28/32", "29/30", "29/32", "30/30", "30/32"]
     },
@@ -24,6 +26,7 @@
       "brand": "Boss",
       "price": 149.00,
       "originalPrice": 249.00,
+      "color": "Grau",
       "image": "Oversized-Slim-Fit-Hose-aus-strukturiertem-Stretch-Gewebe.jpg",
       "sizes": ["34", "36", "46"]
     },
@@ -33,6 +36,7 @@
       "brand": "Boss",
       "price": 124.00,
       "originalPrice": 179.95,
+      "color": "Beige",
       "image": "Slim-Fit-Hose-aus-elastischem-Punto-Milano-Gewebe.jpg",
       "sizes": ["34", "36", "38", "40", "42", "44", "46"]
     }
@@ -44,6 +48,7 @@
       "brand": "Boss",
       "price": 319.00,
       "originalPrice": 449.00,
+      "color": "Beige",
       "image": "Wasserabweisende-Jacke-mit-geraffter-Taille.jpg",
       "sizes": ["34", "36", "38", "40", "42" , "44", "48"]
     },
@@ -53,6 +58,7 @@
       "brand": "Boss",
       "price": 319.00,
       "originalPrice": 449.00,
+      "color": "Schwarz",
       "image": "Bikerjacke-aus-genarbtem-Leder-mit-Reißverschlüssen-und-Nieten.jpg",
       "sizes": ["32", "34", "36", "40" , "44"]
     },
@@ -62,6 +68,7 @@
       "brand": "Boss",
       "price": 229.00,
       "originalPrice": 289.00,
+      "color": "Dunkelblau",
       "image": "Wasserabweisende-wattierte-Reitsport-Bomberjacke.jpg",
       "sizes": ["M", "L", "XL"]
     },
@@ -71,6 +78,7 @@
       "brand": "Boss",
       "price": 89.00,
       "originalPrice": 149.95,
+      "color": "Indigoblau",
       "image": "Ärmellose-Jacke-im-Boxy-Fit-aus-indigoblauem-Denim.jpg",
       "sizes": ["M", "L", "XL"]
     }
@@ -82,6 +90,7 @@
       "brand": "BOSS",
       "price": 35.00,
       "originalPrice": 49.95,
+      "color": "Koralle",
       "image": "t-shirt-baumwoll-jersey-mit-logo-detail.jpg",
       "sizes": ["XS", "S", "M", "L", "XL"]
     },
@@ -91,6 +100,7 @@
       "brand": "BOSS",
       "price": 89.00,
       "originalPrice": 139.95,
+      "color": "Rosa",
       "image": "Ärmelloses-Top-aus-Merinowolle-mit-Stehkragen.jpg",
       "sizes": ["S", "M", "L", "XXL"]
     },
@@ -100,6 +110,7 @@
       "brand": "BOSS",
       "price": 49.00,
       "originalPrice": 79.95,
+      "color": "Rosa",
       "image": "T-Shirt-aus-merzerisierter-Baumwolle-mit-Double-B-Monogramm.jpg",
       "sizes": ["XS", "M"]
     },
@@ -109,6 +120,7 @@
       "brand": "BOSS",
       "price": 40.00,
       "originalPrice": 79.95,
+      "color": "Schwarz",
       "image": "Rollkragen-Longsleeve-aus-Stretch-Jersey.jpg",
       "sizes": ["M"]
     }
@@ -120,6 +132,7 @@
       "brand": "Boss",
       "price": 249.00,
       "originalPrice": null,
+      "color": "Schwarz",
       "image": "a-linien-wickelrock-aus-stretch-baumwolle.jpg",
       "sizes": ["34", "36", "38", "40", "42", "44", "46"]
     },
@@ -129,6 +142,7 @@
       "brand": "Boss",
       "price": 319.00,
       "originalPrice": 349.00,
+      "color": "Aubergine",
       "image": "bleistiftrock-aus-leder-mit-bahnen.jpg",
       "sizes": ["36", "38", "44"]
     },
@@ -138,6 +152,7 @@
       "brand": "Boss",
       "price": 179.95,
       "originalPrice": null,
+      "color": "Schwarz",
       "image": "slim-fit-bleistiftrock-aus-in-italien-gefertigter-schurwolle.jpg",
       "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
     },
@@ -147,6 +162,7 @@
       "brand": "Boss",
       "price": 134.00,
       "originalPrice": 199.95,
+      "color": "Bunt",
       "image": "minirock-aus-tweed-mit-feder-muster.jpg",
       "sizes": ["36", "38", "40", "42", "44", "46"]
     }
@@ -158,6 +174,7 @@
       "brand": "Boss",
       "price": 139.00,
       "originalPrice": 229.00,
+      "color": "Bunt",
       "image": "wickelkleid-aus-krepp-georgette-mit-schmetterlingsprint.jpg",
       "sizes": ["32", "34", "36", "38", "40", "42", "44"]
     },
@@ -167,6 +184,7 @@
       "brand": "Boss",
       "price": 349.00,
       "originalPrice": null,
+      "color": "Burgundy",
       "image": "Kleid-aus-Schurwolle-mit-Paspeln-am-Bund.jpg",
       "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
     },
@@ -176,6 +194,7 @@
       "brand": "Boss",
       "price": 329.00,
       "originalPrice": null,
+      "color": "Schwarz",
       "image": "Kleid-aus-Stretch-Jersey-mit-Schluesselloch-Ausschnitt.jpg",
       "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
     },
@@ -185,6 +204,7 @@
       "brand": "Boss",
       "price": 179.00,
       "originalPrice": 229.00,
+      "color": "Beige",
       "image": "Relaxed-Fit-Hemdblusenkleid-aus-Stretch-Baumwolle.jpg",
       "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
     }
@@ -196,6 +216,7 @@
       "brand": "Boss",
       "price": 199.00,
       "originalPrice": null,
+      "color": "Creme",
       "image": "sneakers-aus-veloursleder-mit-gummisohlen.jpg",
       "sizes": ["35", "36", "37", "38", "39", "40", "41", "42"]
     },
@@ -205,6 +226,7 @@
       "brand": "Hugo",
       "price": 199.00,
       "originalPrice": null,
+      "color": "Schwarz",
       "image": "Mules-mit-offener-Ferse-aus-Brush-Off-Leder.jpg",
       "sizes": ["36", "37", "38","39","40", "41"]
     },
@@ -214,6 +236,7 @@
       "brand": "Hugo",
       "price": 159.00,
       "originalPrice": 230.00,
+      "color": "Schwarz",
       "image": "Boots-aus-Kunstleder-mit-Schließe-am-Riemen.jpg",
       "sizes": ["35","36", "37", "38", "40", "42"]
     },
@@ -223,6 +246,7 @@
       "brand": "Boss",
       "price": 399.00,
       "originalPrice": null,
+      "color": "Creme",
       "image": "Pumps-aus-Veloursleder-mit-komfortabler-Innensohle.jpg",
       "sizes": ["36", "37", "37.5", "38", "39", "40", "41", "42", "43", "44", "45", "46"]
     },
@@ -232,6 +256,7 @@
       "brand": "Boss",
       "price": 139.00,
       "originalPrice": 199.00,
+      "color": "Orange",
       "image": "Sneakers-aus-Veloursleder-mit-Gummisohlen-Orange.jpg",
       "sizes": ["35", "36", "37", "38", "39", "40", "42"]
     },
@@ -241,6 +266,7 @@
       "brand": "Boss",
       "price": 550.00,
       "originalPrice": null,
+      "color": "Creme",
       "image": "Kniehohe-Boots-aus-Veloursleder-und-Leder.jpg",
       "sizes": ["38", "38.5"]
     },
@@ -250,7 +276,9 @@
       "brand": "Boss",
       "price": 299.00,
       "originalPrice": null,
+      "color": "Schwarz",
       "image": "Boots-aus-Veloursleder-mit-kubanischem-Absatz.jpg",
       "sizes": ["36", "37", "38", "39", "40", "41", "42"]
-    }  ]
+    }
+  ]
 }
