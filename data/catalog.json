@@ -1,0 +1,256 @@
+{
+  "hosen": [
+    {
+      "id": "hosen-1",
+      "name": "Jeans aus cremefarbenem Denim mit weitem Beinverlauf und Bundfalten auf der Vorderseite",
+      "brand": "Boss",
+      "price": 129.00,
+      "originalPrice": 249.00,
+      "image": "Jeans-aus-cremefarbenem-Denim-mit-weitem-Beinverlauf-und Bundfalten-auf-der-Vorderseite.jpg",
+      "sizes": ["26/32", "27/32", "28/32", "29/32"]
+    },
+    {
+      "id": "hosen-2",
+      "name": "Blaue Slim-Fit Jeans aus bequemem Stretch-Denim",
+      "brand": "Boss",
+      "price": 199.95,
+      "originalPrice": null,
+      "image": "Blaue-Slim-Fit-Jeans-aus-bequemem-Stretch-Denim.jpg",
+      "sizes": ["25/30", "25/32", "26/28", "26/30", "26/32", "27/28", "27/30", "27/32", "28/28", "28/30", "28/32", "29/30", "29/32", "30/30", "30/32"]
+    },
+    {
+      "id": "hosen-3",
+      "name": "Oversized Slim-Fit Hose aus strukturiertem Stretch-Gewebe",
+      "brand": "Boss",
+      "price": 149.00,
+      "originalPrice": 249.00,
+      "image": "Oversized-Slim-Fit-Hose-aus-strukturiertem-Stretch-Gewebe.jpg",
+      "sizes": ["34", "36", "46"]
+    },
+    {
+      "id": "hosen-4",
+      "name": "Slim-Fit Hose aus elastischem Punto-Milano-Gewebe",
+      "brand": "Boss",
+      "price": 124.00,
+      "originalPrice": 179.95,
+      "image": "Slim-Fit-Hose-aus-elastischem-Punto-Milano-Gewebe.jpg",
+      "sizes": ["34", "36", "38", "40", "42", "44", "46"]
+    }
+  ],
+  "jacken": [
+    {
+      "id": "jacken-1",
+      "name": "Wasserabweisende Jacke mit geraffter Taille",
+      "brand": "Boss",
+      "price": 319.00,
+      "originalPrice": 449.00,
+      "image": "Wasserabweisende-Jacke-mit-geraffter-Taille.jpg",
+      "sizes": ["34", "36", "38", "40", "42" , "44", "48"]
+    },
+    {
+      "id": "jacken-2",
+      "name": "Bikerjacke aus genarbtem Leder mit Reißverschlüssen und Nieten",
+      "brand": "Boss",
+      "price": 319.00,
+      "originalPrice": 449.00,
+      "image": "Bikerjacke-aus-genarbtem-Leder-mit-Reißverschlüssen-und-Nieten.jpg",
+      "sizes": ["32", "34", "36", "40" , "44"]
+    },
+    {
+      "id": "jacken-3",
+      "name": "Wasserabweisende, wattierte Reitsport-Bomberjacke",
+      "brand": "Boss",
+      "price": 229.00,
+      "originalPrice": 289.00,
+      "image": "Wasserabweisende-wattierte-Reitsport-Bomberjacke.jpg",
+      "sizes": ["M", "L", "XL"]
+    },
+    {
+      "id": "jacken-4",
+      "name": "Ärmellose Jacke im Boxy-Fit aus indigoblauem Denim",
+      "brand": "Boss",
+      "price": 89.00,
+      "originalPrice": 149.95,
+      "image": "Ärmellose-Jacke-im-Boxy-Fit-aus-indigoblauem-Denim.jpg",
+      "sizes": ["M", "L", "XL"]
+    }
+  ],
+  "pullover": [
+    {
+      "id": "pullover-1",
+      "name": "T-Shirt aus Baumwoll-Jersey mit Logo-Detail",
+      "brand": "BOSS",
+      "price": 35.00,
+      "originalPrice": 49.95,
+      "image": "t-shirt-baumwoll-jersey-mit-logo-detail.jpg",
+      "sizes": ["XS", "S", "M", "L", "XL"]
+    },
+    {
+      "id": "pullover-2",
+      "name": "Ärmelloses Top aus Merinowolle mit Stehkragen",
+      "brand": "BOSS",
+      "price": 89.00,
+      "originalPrice": 139.95,
+      "image": "Ärmelloses-Top-aus-Merinowolle-mit-Stehkragen.jpg",
+      "sizes": ["S", "M", "L", "XXL"]
+    },
+    {
+      "id": "pullover-3",
+      "name": "T-Shirt aus merzerisierter Baumwolle mit Double-B-Monogramm",
+      "brand": "BOSS",
+      "price": 49.00,
+      "originalPrice": 79.95,
+      "image": "T-Shirt-aus-merzerisierter-Baumwolle-mit-Double-B-Monogramm.jpg",
+      "sizes": ["XS", "M"]
+    },
+    {
+      "id": "pullover-4",
+      "name": "Rollkragen-Longsleeve aus Stretch-Jersey",
+      "brand": "BOSS",
+      "price": 40.00,
+      "originalPrice": 79.95,
+      "image": "Rollkragen-Longsleeve-aus-Stretch-Jersey.jpg",
+      "sizes": ["M"]
+    }
+  ],
+  "roecke": [
+    {
+      "id": "roecke-1",
+      "name": "A-Linien-Wickelrock aus Stretch-Baumwolle",
+      "brand": "Boss",
+      "price": 249.00,
+      "originalPrice": null,
+      "image": "a-linien-wickelrock-aus-stretch-baumwolle.jpg",
+      "sizes": ["34", "36", "38", "40", "42", "44", "46"]
+    },
+    {
+      "id": "roecke-2",
+      "name": "Bleistiftrock aus Leder mit Bahnen",
+      "brand": "Boss",
+      "price": 319.00,
+      "originalPrice": 349.00,
+      "image": "bleistiftrock-aus-leder-mit-bahnen.jpg",
+      "sizes": ["36", "38", "44"]
+    },
+    {
+      "id": "roecke-3",
+      "name": "Slim-Fit Bleistiftrock aus in Italien gefertigter Schurwolle",
+      "brand": "Boss",
+      "price": 179.95,
+      "originalPrice": null,
+      "image": "slim-fit-bleistiftrock-aus-in-italien-gefertigter-schurwolle.jpg",
+      "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
+    },
+    {
+      "id": "roecke-4",
+      "name": "Minirock aus Tweed mit Feder-Muster",
+      "brand": "Boss",
+      "price": 134.00,
+      "originalPrice": 199.95,
+      "image": "minirock-aus-tweed-mit-feder-muster.jpg",
+      "sizes": ["36", "38", "40", "42", "44", "46"]
+    }
+  ],
+  "kleider": [
+    {
+      "id": "kleider-1",
+      "name": "Wickelkleid aus Krepp-Georgette mit Schmetterlingsprint",
+      "brand": "Boss",
+      "price": 139.00,
+      "originalPrice": 229.00,
+      "image": "wickelkleid-aus-krepp-georgette-mit-schmetterlingsprint.jpg",
+      "sizes": ["32", "34", "36", "38", "40", "42", "44"]
+    },
+    {
+      "id": "kleider-2",
+      "name": "Kleid aus Schurwolle mit Paspeln am Bund",
+      "brand": "Boss",
+      "price": 349.00,
+      "originalPrice": null,
+      "image": "Kleid-aus-Schurwolle-mit-Paspeln-am-Bund.jpg",
+      "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
+    },
+    {
+      "id": "kleider-3",
+      "name": "Kleid aus Stretch-Jersey mit Schlüsselloch-Ausschnitt",
+      "brand": "Boss",
+      "price": 329.00,
+      "originalPrice": null,
+      "image": "Kleid-aus-Stretch-Jersey-mit-Schluesselloch-Ausschnitt.jpg",
+      "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
+    },
+    {
+      "id": "kleider-4",
+      "name": "Relaxed-Fit Hemdblusenkleid aus Stretch-Baumwolle",
+      "brand": "Boss",
+      "price": 179.00,
+      "originalPrice": 229.00,
+      "image": "Relaxed-Fit-Hemdblusenkleid-aus-Stretch-Baumwolle.jpg",
+      "sizes": ["32", "34", "36", "38", "40", "42", "44", "46"]
+    }
+  ],
+  "schuhe": [
+    {
+      "id": "schuhe-1",
+      "name": "Sneakers aus Veloursleder mit Gummisohlen",
+      "brand": "Boss",
+      "price": 199.00,
+      "originalPrice": null,
+      "image": "sneakers-aus-veloursleder-mit-gummisohlen.jpg",
+      "sizes": ["35", "36", "37", "38", "39", "40", "41", "42"]
+    },
+    {
+      "id": "schuhe-2",
+      "name": "Mules mit offener Ferse aus Brush-Off-Leder",
+      "brand": "Hugo",
+      "price": 199.00,
+      "originalPrice": null,
+      "image": "Mules-mit-offener-Ferse-aus-Brush-Off-Leder.jpg",
+      "sizes": ["36", "37", "38","39","40", "41"]
+    },
+    {
+      "id": "schuhe-3",
+      "name": "Boots aus Kunstleder mit Schließe am Riemen",
+      "brand": "Hugo",
+      "price": 159.00,
+      "originalPrice": 230.00,
+      "image": "Boots-aus-Kunstleder-mit-Schließe-am-Riemen.jpg",
+      "sizes": ["35","36", "37", "38", "40", "42"]
+    },
+    {
+      "id": "schuhe-4",
+      "name": "Pumps aus Veloursleder mit komfortabler Innensohle",
+      "brand": "Boss",
+      "price": 399.00,
+      "originalPrice": null,
+      "image": "Pumps-aus-Veloursleder-mit-komfortabler-Innensohle.jpg",
+      "sizes": ["36", "37", "37.5", "38", "39", "40", "41", "42", "43", "44", "45", "46"]
+    },
+    {
+      "id": "schuhe-5",
+      "name": "Sneakers aus Veloursleder mit Gummisohlen",
+      "brand": "Boss",
+      "price": 139.00,
+      "originalPrice": 199.00,
+      "image": "Sneakers-aus-Veloursleder-mit-Gummisohlen-Orange.jpg",
+      "sizes": ["35", "36", "37", "38", "39", "40", "42"]
+    },
+    {
+      "id": "schuhe-6",
+      "name": "Kniehohe Boots aus Veloursleder und Leder",
+      "brand": "Boss",
+      "price": 550.00,
+      "originalPrice": null,
+      "image": "Kniehohe-Boots-aus-Veloursleder-und-Leder.jpg",
+      "sizes": ["38", "38.5"]
+    },
+    {
+      "id": "schuhe-7",
+      "name": "Boots aus Veloursleder mit kubanischem Absatz",
+      "brand": "Boss",
+      "price": 299.00,
+      "originalPrice": null,
+      "image": "Boots-aus-Veloursleder-mit-kubanischem-Absatz.jpg",
+      "sizes": ["36", "37", "38", "39", "40", "41", "42"]
+    }  ]
+}

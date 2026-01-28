@@ -1,3 +1,5 @@
 azure-identity
 requests
 python-dotenv
+flask
+flask-cors

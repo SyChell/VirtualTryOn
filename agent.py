@@ -9,12 +9,28 @@ TODO: Transition to hosted agent in next iteration.
 
 import os
 import base64
-import glob
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from dotenv import load_dotenv
 from azure.identity import DefaultAzureCredential
 
 load_dotenv()
+
+
+def create_session_with_retries():
+    """Create a requests session with retry logic."""
+    session = requests.Session()
+    retries = Retry(
+        total=3,
+        backoff_factor=2,
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=["POST"]
+    )
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def generate_outfit_image(image_paths: list[str], output_path: str) -> str:
@@ -60,6 +76,7 @@ def generate_outfit_image(image_paths: list[str], output_path: str) -> str:
     # Multi-image upload
     files = []
     file_handles = []
+    session = create_session_with_retries()
     try:
         for img_path in image_paths:
             fh = open(img_path, "rb")
@@ -73,7 +90,8 @@ def generate_outfit_image(image_paths: list[str], output_path: str) -> str:
             "quality": "high"
         }
         
-        response = requests.post(url, headers=headers, files=files, data=data, timeout=120)
+        # Use longer timeout for image generation (5 minutes)
+        response = session.post(url, headers=headers, files=files, data=data, timeout=300)
         response.raise_for_status()
         
         result = response.json()
@@ -86,74 +104,3 @@ def generate_outfit_image(image_paths: list[str], output_path: str) -> str:
     finally:
         for fh in file_handles:
             fh.close()
-
-
-def get_clothing_images(images_folder: str) -> list[str]:
-    """
-    Get all clothing images from the folder.
-    
-    Args:
-        images_folder: Path to the folder containing clothing images
-        
-    Returns:
-        List of image file paths
-    """
-    image_files = sorted(
-        glob.glob(f"{images_folder}/*.jpg") + 
-        glob.glob(f"{images_folder}/*.jpeg") + 
-        glob.glob(f"{images_folder}/*.png")
-    )
-    # Filter out output/generated images
-    image_files = [f for f in image_files if 'output' not in os.path.basename(f).lower() 
-                   and 'generated' not in os.path.basename(f).lower()]
-    
-    return image_files
-
-
-def run_virtual_tryon():
-    """
-    Run the Virtual Try-On pipeline.
-    
-    Input: Images from IMAGES_FOLDER
-    Output: Generated outfit image saved to generated_images folder
-    
-    Returns:
-        Path to the generated image
-    """
-    images_folder = os.environ.get("IMAGES_FOLDER", "./images")
-    output_folder = "./generated_images"
-    
-    # Create output folder if it doesn't exist
-    os.makedirs(output_folder, exist_ok=True)
-    
-    # Get input images
-    print(f"📂 Input folder: {images_folder}")
-    image_paths = get_clothing_images(images_folder)
-    
-    if not image_paths:
-        print(f"❌ No clothing images found in {images_folder}")
-        return None
-    
-    item_names = [os.path.splitext(os.path.basename(f))[0] for f in image_paths]
-    print(f"📸 Input images: {', '.join(item_names)}")
-    
-    # Generate output
-    output_path = os.path.join(output_folder, "generated_outfit.jpeg")
-    
-    print(f"\n🔄 Generating outfit...")
-    result_path = generate_outfit_image(image_paths, output_path)
-    
-    print(f"\n✅ Output image: {os.path.abspath(result_path)}")
-    return result_path
-
-
-def main():
-    """Main function - Run the Virtual Try-On pipeline"""
-    print("="*60)
-    print("👗 VIRTUAL TRY-ON AGENT")
-    print("="*60 + "\n")
-    run_virtual_tryon()
-
-
-if __name__ == "__main__":
-    main()

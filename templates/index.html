@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Try-On | Dein Look</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Main Application -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <nav class="nav-categories">
+                <button class="nav-item active" data-category="hosen">Hosen</button>
+                <button class="nav-item" data-category="roecke">Röcke</button>
+                <button class="nav-item" data-category="kleider">Kleider</button>
+                <button class="nav-item" data-category="jacken">Jacken</button>
+                <button class="nav-item" data-category="pullover">Pullover</button>
+                <button class="nav-item" data-category="schuhe">Schuhe</button>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn" aria-label="Suchen">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" aria-label="Konto">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </button>
+                <button class="icon-btn cart-btn" id="cartBtn" aria-label="Warenkorb">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                <button class="icon-btn" aria-label="Mehr">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="1"></circle>
+                        <circle cx="12" cy="5" r="1"></circle>
+                        <circle cx="12" cy="19" r="1"></circle>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Products Grid -->
+            <section class="products-section">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Divider -->
+            <div class="divider"></div>
+
+            <!-- Selection Panel -->
+            <section class="selection-section">
+                <div class="selected-items" id="selectedItems">
+                    <!-- Selected items appear here -->
+                </div>
+                <p class="selection-hint" id="selectionHint">
+                    Ziehe die Produkte in diese Fläche, um sie für deinen Look auszuwählen
+                </p>
+                <button class="btn-generate" id="btnGenerate" disabled>
+                    LOOK GENERIEREN
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <header class="modal-header">
+                <span class="modal-title">Dein Look</span>
+                <div class="header-actions">
+                    <button class="icon-btn" aria-label="Suchen">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" aria-label="Konto">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
+                    <button class="icon-btn cart-btn" aria-label="Warenkorb">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                            <path d="M3 6h18"></path>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        <span class="cart-badge" id="cartBadge2">0</span>
+                    </button>
+                    <button class="icon-btn" aria-label="Mehr">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <!-- Generated Look Image -->
+                <div class="look-preview">
+                    <img id="generatedLookImage" src="" alt="Generierter Look">
+                </div>
+
+                <!-- Divider -->
+                <div class="divider"></div>
+
+                <!-- Product Details with Size Selection -->
+                <div class="look-details" id="lookDetails">
+                    <!-- Product items with size selection loaded here -->
+                </div>
+            </div>
+
+            <!-- Action Buttons (outside modal-body to stay fixed at bottom) -->
+            <div class="modal-actions">
+                <button class="btn-primary" id="btnAddToCart">
+                    LOOK IN DEN WARENKORB
+                </button>
+                <button class="btn-secondary" id="btnCustomize">
+                    Look anpassen
+                    <span class="btn-icon">ℹ</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Look wird generiert...</p>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal cart-modal" id="cartModal">
+        <div class="modal-content">
+            <header class="modal-header cart-header">
+                <button class="back-btn" id="continueShoppingBtn" aria-label="Zurück">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5"></path>
+                        <path d="m12 19-7-7 7-7"></path>
+                    </svg>
+                    <span>Weiter einkaufen</span>
+                </button>
+                <span class="modal-title">Warenkorb</span>
+                <button class="close-btn" id="closeCartBtn">×</button>
+            </header>
+
+            <div class="modal-body cart-body">
+                <div class="cart-empty" id="cartEmpty">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <p>Dein Warenkorb ist leer</p>
+                </div>
+                <div class="cart-items" id="cartItems">
+                    <!-- Cart items loaded here -->
+                </div>
+            </div>
+
+            <div class="cart-footer">
+                <div class="cart-total-row">
+                    <span class="cart-total-label">Gesamtsumme:</span>
+                    <span class="cart-total-price" id="cartTotal">0,00 €</span>
+                </div>
+                <div class="cart-actions">
+                    <button class="btn-secondary" id="clearCartBtn">Warenkorb leeren</button>
+                    <button class="btn-primary" id="checkoutBtn">Zur Kasse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
