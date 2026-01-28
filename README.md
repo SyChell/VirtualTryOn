@@ -1,32 +1,24 @@
-# Virtual Try-On with Azure OpenAI GPT-Image-1
+# 👗 Virtual Try-On
 
-Generate professional fashion photography by combining multiple clothing items using Azure OpenAI's GPT-Image-1 Image Edit API.
+A fashion virtual try-on web application that lets users select clothing items and generates professional outfit photos using Azure OpenAI's GPT-Image-1.
 
-## Features
+## ✨ Features
 
-- **Dynamic Image Loading**: Automatically discovers all clothing item images in a folder
-- **Smart Prompt Generation**: Creates prompts based on image filenames (e.g., `skirt.jpg` → extracts only the skirt)
-- **Professional Output**: Generates high-quality e-commerce style fashion photos
-- **Multiple Input Support**: Combines multiple clothing items into a single outfit using the Image Edit API
+- **Interactive Web App** - Browse products by category, select items, and generate looks
+- **AI Outfit Generation** - Combines multiple clothing items into a single professional photo
+- **Shopping Cart** - Save looks to cart with size selection, remove individual items
+- **Product Catalog** - Organized by categories: Pants, Skirts, Dresses, Jackets, Sweaters, Shoes
+- **Modern UI** - Clean, responsive design with smooth animations
 
-## Prerequisites
+## 🚀 Quick Start
 
-### Azure Resources
-- Azure subscription
-- **Azure OpenAI resource** with GPT-Image-1 model deployed
+### Prerequisites
 
-### Local Environment
 - Python 3.10+
-- Azure CLI installed and authenticated (`az login`)
+- Azure subscription with Azure OpenAI (GPT-Image-1 deployed)
+- Azure CLI installed
 
-### Required Python Packages
-```bash
-pip install -r requirements.txt
-```
-
-## Quick Start
-
-### 1. Clone and Setup
+### 1. Clone & Install
 
 ```bash
 git clone https://github.com/SyChell/VirtualTryOn.git
@@ -36,92 +28,104 @@ pip install -r requirements.txt
 
 ### 2. Configure Environment
 
-Copy the example environment file and fill in your Azure details:
-
-```bash
-cp .env.example .env
-```
-
-Edit `.env`:
+Create a `.env` file:
 
 ```env
-# Azure OpenAI Configuration
-AOAI_API_BASE=https://your-resource.cognitiveservices.azure.com
+AOAI_API_BASE=https://your-resource.openai.azure.com
 AOAI_DEPLOYMENT_NAME=gpt-image-1
 AOAI_API_VERSION=2025-04-01-preview
-
-# Image Configuration
-IMAGES_FOLDER=./images
 ```
 
-### 3. Authenticate to Azure
+### 3. Login to Azure
 
 ```bash
 az login
 ```
 
-### 4. Add Clothing Images
-
-Place your clothing item images in the `images/` folder (or your configured `IMAGES_FOLDER`):
-- Name each image after the clothing item: `cap.jpg`, `jeans.jpg`, `sneakers.jpg`, `t-shirt.png`
-- Supported formats: `.jpg`, `.jpeg`, `.png`
-
-### 5. Run
+### 4. Run the App
 
 ```bash
-python agent.py
+python app.py
 ```
 
-## How It Works
+Open **http://localhost:5000** in your browser.
 
-The agent uses Azure OpenAI's **Image Edit API** (`/images/edits`) which accepts multiple input images. The API combines the clothing items from each input image into a single generated outfit.
-
-**Pipeline:**
-1. Scans `IMAGES_FOLDER` for clothing images
-2. Sends all images to the Image Edit API with a prompt
-3. Saves the generated outfit to `generated_images/generated_outfit.jpeg`
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 VirtualTryOn/
-├── Main.ipynb          # Jupyter notebook for interactive development
-├── agent.py            # Image processing pipeline
-├── .env                # Environment configuration (not committed)
-├── .env.example        # Example environment file
-├── requirements.txt    # Python dependencies
-├── images/             # Input clothing images
-│   ├── cap.jpg
-│   ├── jeans.jpg
-│   ├── sneakers.jpg
-│   └── t-shirt.jpg
-├── generated_images/   # Output folder
-│   └── generated_outfit.jpeg
-└── README.md
+├── app.py                  # Flask web server
+├── agent.py                # AI image generation
+├── main.ipynb              # Development notebook
+├── requirements.txt        # Python dependencies
+├── .env                    # Configuration (not committed)
+├── data/
+│   └── catalog.json        # Product catalog
+├── static/
+│   ├── css/styles.css      # Styling
+│   ├── js/app.js           # Frontend logic
+│   ├── products/           # Product images by category
+│   │   ├── hosen/
+│   │   ├── jacken/
+│   │   ├── kleider/
+│   │   ├── pullover/
+│   │   ├── roecke/
+│   │   └── schuhe/
+│   └── generated/          # Generated outfit images
+└── templates/
+    └── index.html          # Main page
 ```
 
-## Example
+## 🛠️ How It Works
 
-**Input images:**
-- `cap.jpg` - A baseball cap
-- `jeans.jpg` - Blue jeans
-- `sneakers.jpg` - White sneakers
-- `t-shirt.jpg` - A casual t-shirt
+1. **Browse Products** - Select items from different categories
+2. **Generate Look** - Click "Look Generieren" to create an outfit
+3. **AI Processing** - Azure OpenAI combines clothing images into one photo
+4. **Add to Cart** - Select sizes and save the look to your cart
 
-**Output:** Professional fashion photo of a model wearing all four items as a complete outfit.
+### Technical Flow
 
-## Troubleshooting
+```
+User selects items → Flask API → Azure OpenAI Image Edit API → Generated outfit
+```
+
+## 📓 Development Notebook
+
+Use `main.ipynb` for testing the AI generation independently:
+
+1. Open in VS Code or Jupyter
+2. Update `IMAGES_FOLDER` to point to product images (e.g., `./static/products/hosen`)
+3. Run all cells to generate an outfit
+
+## 🔧 Configuration
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `AOAI_API_BASE` | Azure OpenAI endpoint | Required |
+| `AOAI_DEPLOYMENT_NAME` | Model deployment name | `gpt-image-1` |
+| `AOAI_API_VERSION` | API version | `2025-04-01-preview` |
+
+## 🐛 Troubleshooting
 
 ### "AOAI_API_BASE environment variable is required"
-Make sure your `.env` file has the correct Azure OpenAI endpoint.
+Create a `.env` file with your Azure OpenAI endpoint.
 
 ### Authentication errors
-Run `az login` and ensure you're signed into the correct Azure subscription.
+Run `az login` and ensure you're signed into the correct subscription.
 
-### Image generation fails
-- Verify GPT-Image-1 is deployed in your Azure OpenAI resource
-- Check that `AOAI_API_BASE` points to your Azure OpenAI endpoint
+### Images not loading
+Check that product images exist in `static/products/<category>/` and filenames match `catalog.json`.
 
-## License
+### Generation fails
+- Verify GPT-Image-1 is deployed in Azure OpenAI
+- Check Azure CLI authentication: `az account show`
 
-MIT
+## 📦 Dependencies
+
+- **Flask** - Web framework
+- **Flask-CORS** - Cross-origin support
+- **azure-identity** - Azure authentication
+- **requests** - HTTP client
+- **python-dotenv** - Environment variables
+
+
