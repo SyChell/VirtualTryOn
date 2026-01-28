@@ -124,6 +124,20 @@ body {
     outline: 3px solid #1a1a1a;
 }
 
+/* Drag and Drop styles */
+.product-card[draggable="true"] {
+    cursor: grab;
+}
+
+.product-card[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+.product-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
 .product-image-container {
     position: relative;
     aspect-ratio: 3/4;
@@ -252,7 +266,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     border-left: 1px solid #e5e5e5;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.selection-section.drop-zone-active {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-left: 2px dashed #1a1a1a;
+}
+
+.selection-section:has(.selected-item) {
+    justify-content: flex-start;
 }
 
 .selected-items {
@@ -351,12 +376,31 @@ body {
 }
 
 .selection-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    color: #666;
-    font-size: 1.1rem;
-    font-style: italic;
-    margin: 2rem 0;
-    padding: 0 1rem;
+    color: #888;
+    font-size: 0.95rem;
+    margin: 1.5rem 0;
+    padding: 2rem 1rem;
+    border: 2px dashed #ddd;
+    border-radius: 12px;
+    background: #fafafa;
+    flex: 1;
+}
+
+.hint-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.selection-hint p {
+    margin: 0;
+    max-width: 200px;
+    line-height: 1.5;
 }
 
 .btn-generate {

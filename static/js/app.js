@@ -98,6 +98,10 @@ class VirtualTryOnApp {
         this.selectionHint = document.getElementById('selectionHint');
         this.btnGenerate = document.getElementById('btnGenerate');
         this.resultModal = document.getElementById('resultModal');
+        this.dropZone = document.querySelector('.selection-section');
+        
+        // Setup drop zone
+        this.setupDropZone();
         this.cartModal = document.getElementById('cartModal');
         this.loadingOverlay = document.getElementById('loadingOverlay');
         this.generatedLookImage = document.getElementById('generatedLookImage');
@@ -146,12 +150,25 @@ class VirtualTryOnApp {
     renderProducts(products) {
         this.productsGrid.innerHTML = products.map(product => this.createProductCard(product)).join('');
         
-        // Bind click events to product cards
+        // Bind drag events to product cards
         this.productsGrid.querySelectorAll('.product-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                // Ignore if clicking wishlist button
-                if (e.target.closest('.product-wishlist')) return;
-                this.toggleProductSelection(card.dataset.productId);
+            card.setAttribute('draggable', 'true');
+            
+            card.addEventListener('dragstart', (e) => {
+                const productId = card.dataset.productId;
+                e.dataTransfer.setData('text/plain', productId);
+                e.dataTransfer.effectAllowed = 'copy';
+                card.classList.add('dragging');
+                
+                // Create a custom drag image
+                const img = card.querySelector('.product-image');
+                if (img) {
+                    e.dataTransfer.setDragImage(img, 50, 50);
+                }
+            });
+            
+            card.addEventListener('dragend', () => {
+                card.classList.remove('dragging');
             });
         });
     }
@@ -216,6 +233,57 @@ class VirtualTryOnApp {
                 </div>
             </div>
         `;
+    }
+
+    setupDropZone() {
+        // Prevent default drag behaviors
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            this.dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+        
+        // Highlight drop zone when dragging over
+        ['dragenter', 'dragover'].forEach(eventName => {
+            this.dropZone.addEventListener(eventName, () => {
+                this.dropZone.classList.add('drop-zone-active');
+            });
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            this.dropZone.addEventListener(eventName, () => {
+                this.dropZone.classList.remove('drop-zone-active');
+            });
+        });
+        
+        // Handle drop
+        this.dropZone.addEventListener('drop', (e) => {
+            const productId = e.dataTransfer.getData('text/plain');
+            if (productId) {
+                this.addProductById(productId);
+            }
+        });
+    }
+
+    addProductById(productId) {
+        // Already selected? Skip
+        if (this.selectedItems.has(productId)) return;
+        
+        // Find the product in any category
+        const category = productId.split('-')[0];
+        let product = this.products[category]?.find(p => p.id === productId);
+        
+        // If not loaded yet, try current category
+        if (!product) {
+            product = this.products[this.currentCategory]?.find(p => p.id === productId);
+        }
+        
+        if (product) {
+            product.category = category;
+            this.selectedItems.set(productId, product);
+            this.updateUI();
+        }
     }
 
     toggleProductSelection(productId) {

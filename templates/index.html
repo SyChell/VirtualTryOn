@@ -68,9 +68,15 @@
                 <div class="selected-items" id="selectedItems">
                     <!-- Selected items appear here -->
                 </div>
-                <p class="selection-hint" id="selectionHint">
-                    Ziehe die Produkte in diese Fläche, um sie für deinen Look auszuwählen
-                </p>
+                <div class="selection-hint" id="selectionHint">
+                    <div class="hint-content">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.4;">
+                            <path d="M12 2L12 22M12 2L8 6M12 2L16 6M12 22L8 18M12 22L16 18"></path>
+                            <rect x="4" y="8" width="16" height="8" rx="2" stroke-dasharray="3 3"></rect>
+                        </svg>
+                        <p>Ziehe Produkte hierher, um deinen Look zusammenzustellen</p>
+                    </div>
+                </div>
                 <button class="btn-generate" id="btnGenerate" disabled>
                     LOOK GENERIEREN
                 </button>
