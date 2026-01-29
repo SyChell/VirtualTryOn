@@ -154,6 +154,81 @@
         <p>Look wird generiert...</p>
     </div>
 
+    <!-- Checkout Success Modal -->
+    <div class="modal checkout-modal" id="checkoutModal">
+        <div class="modal-content checkout-content">
+            <div class="checkout-success">
+                <div class="checkout-header">
+                    <div class="demo-badge">DEMO</div>
+                    <div class="success-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                    </div>
+                    <h2>Bestellung abgeschlossen!</h2>
+                    <p class="checkout-subtitle">Vielen Dank für Ihre Bestellung</p>
+                    <div class="order-number">Bestellnummer: #<span id="orderNumber">000000</span></div>
+                </div>
+                
+                <div class="checkout-body">
+                    <div class="checkout-left">
+                        <h3>Ihre Artikel</h3>
+                        <div class="checkout-summary" id="checkoutSummary">
+                            <!-- Order summary items appear here -->
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-right">
+                        <h3>Bestellübersicht</h3>
+                        <div class="checkout-details">
+                            <div class="checkout-detail-row">
+                                <span>Zwischensumme</span>
+                                <span id="checkoutSubtotal">0,00 €</span>
+                            </div>
+                            <div class="checkout-detail-row">
+                                <span>Versand</span>
+                                <span class="free-shipping">Kostenlos</span>
+                            </div>
+                            <div class="checkout-detail-row total">
+                                <span>Gesamtsumme</span>
+                                <span id="checkoutTotal">0,00 €</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkout-shipping">
+                            <div class="shipping-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="3" width="15" height="13"></rect>
+                                    <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                                    <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                                    <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                                </svg>
+                            </div>
+                            <div class="shipping-info">
+                                <span class="shipping-label">Lieferung</span>
+                                <span class="shipping-date" id="deliveryDate">--</span>
+                            </div>
+                        </div>
+                        
+                        <div class="checkout-info">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M12 16v-4"></path>
+                                <path d="M12 8h.01"></path>
+                            </svg>
+                            <p>Dies ist eine Demo. Es wurde keine echte Bestellung aufgegeben.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary checkout-close-btn" id="closeCheckoutBtn">
+                    Weiter shoppen
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Cart Modal -->
     <div class="modal cart-modal" id="cartModal">
         <div class="modal-content">

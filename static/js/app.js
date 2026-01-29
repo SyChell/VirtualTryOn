@@ -131,6 +131,10 @@ class VirtualTryOnApp {
         document.getElementById('closeCartBtn')?.addEventListener('click', () => this.closeCart());
         document.getElementById('clearCartBtn')?.addEventListener('click', () => this.clearCart());
         document.getElementById('continueShoppingBtn')?.addEventListener('click', () => this.closeCart());
+        
+        // Checkout
+        document.getElementById('checkoutBtn')?.addEventListener('click', () => this.showCheckout());
+        document.getElementById('closeCheckoutBtn')?.addEventListener('click', () => this.closeCheckout());
     }
 
     async loadProducts(category) {
@@ -497,7 +501,7 @@ class VirtualTryOnApp {
         });
 
         if (!allSizesSelected) {
-            alert('Bitte wählen Sie für alle Artikel eine Größe aus.');
+            this.showToast('Bitte wählen Sie für alle Artikel eine Größe aus.', 'warning');
             return;
         }
 
@@ -519,7 +523,7 @@ class VirtualTryOnApp {
         
         this.saveCart();
         
-        alert('Look wurde dem Warenkorb hinzugefügt!');
+        this.showToast('Look wurde dem Warenkorb hinzugefügt!');
         this.closeModal();
         this.clearSavedLook();
         
@@ -592,33 +596,37 @@ class VirtualTryOnApp {
                     <span class="cart-look-title">Look vom ${new Date(look.addedAt).toLocaleDateString('de-DE')}</span>
                     <button class="cart-look-remove" onclick="app.removeFromCart(${look.id})" title="Look entfernen">×</button>
                 </div>
-                ${look.image ? `
-                    <div class="cart-look-image-wrapper">
-                        <img src="${look.image}" alt="Look" class="cart-look-image">
-                    </div>
-                ` : ''}
-                <div class="cart-look-items">
-                    ${look.items.map(item => {
-                        const category = item.id ? item.id.split('-')[0] : '';
-                        const thumbUrl = item.image ? `/static/products/${category}/${item.image}` : '';
-                        return `
-                        <div class="cart-item">
-                            ${thumbUrl ? `<img src="${thumbUrl}" alt="${item.name}" class="cart-item-thumb" onerror="this.style.display='none'">` : '<div class="cart-item-thumb"></div>'}
-                            <div class="cart-item-info">
-                                <span class="cart-item-name">${item.name}</span>
-                                <div class="cart-item-meta">
-                                    <span class="cart-item-size">${item.selectedSize}</span>
-                                    <span class="cart-item-brand">${item.brand}</span>
+                <div class="cart-look-content">
+                    <div class="cart-look-items-section">
+                        <div class="cart-look-items">
+                            ${look.items.map(item => {
+                                const category = item.id ? item.id.split('-')[0] : '';
+                                const thumbUrl = item.image ? `/static/products/${category}/${item.image}` : '';
+                                return `
+                                <div class="cart-item">
+                                    ${thumbUrl ? `<img src="${thumbUrl}" alt="${item.name}" class="cart-item-thumb" onerror="this.style.display='none'">` : '<div class="cart-item-thumb"></div>'}
+                                    <div class="cart-item-info">
+                                        <span class="cart-item-name">${item.name}</span>
+                                        <div class="cart-item-meta">
+                                            <span class="cart-item-size">${item.selectedSize}</span>
+                                            <span class="cart-item-brand">${item.brand}</span>
+                                        </div>
+                                    </div>
+                                    <span class="cart-item-price">${item.price.toFixed(2).replace('.', ',')} €</span>
+                                    <button class="cart-item-remove" onclick="app.removeItemFromCart(${look.id}, '${item.id}')" title="Artikel entfernen">×</button>
                                 </div>
-                            </div>
-                            <span class="cart-item-price">${item.price.toFixed(2).replace('.', ',')} €</span>
-                            <button class="cart-item-remove" onclick="app.removeItemFromCart(${look.id}, '${item.id}')" title="Artikel entfernen">×</button>
+                            `}).join('')}
                         </div>
-                    `}).join('')}
-                </div>
-                <div class="cart-look-subtotal">
-                    <span class="cart-look-subtotal-label">Zwischensumme</span>
-                    <span class="cart-look-subtotal-price">${look.items.reduce((sum, item) => sum + item.price, 0).toFixed(2).replace('.', ',')} €</span>
+                        <div class="cart-look-subtotal">
+                            <span class="cart-look-subtotal-label">Zwischensumme</span>
+                            <span class="cart-look-subtotal-price">${look.items.reduce((sum, item) => sum + item.price, 0).toFixed(2).replace('.', ',')} €</span>
+                        </div>
+                    </div>
+                    ${look.image ? `
+                        <div class="cart-look-image-wrapper">
+                            <img src="${look.image}" alt="Look" class="cart-look-image">
+                        </div>
+                    ` : ''}
                 </div>
             </div>
         `).join('');
@@ -634,6 +642,98 @@ class VirtualTryOnApp {
 
     hideLoading() {
         this.loadingOverlay.classList.remove('active');
+    }
+
+    showToast(message, type = 'success') {
+        // Remove existing toast if any
+        const existingToast = document.querySelector('.toast-notification');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        
+        const toast = document.createElement('div');
+        toast.className = `toast-notification toast-${type}`;
+        toast.innerHTML = `
+            <div class="toast-icon">
+                ${type === 'success' 
+                    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>'
+                    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>'
+                }
+            </div>
+            <span class="toast-message">${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Trigger animation
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+        
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    showCheckout() {
+        if (this.cart.length === 0) return;
+        
+        // Generate order number
+        const orderNumber = Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('orderNumber').textContent = orderNumber;
+        
+        // Calculate delivery date (3-5 business days)
+        const deliveryDate = new Date();
+        deliveryDate.setDate(deliveryDate.getDate() + 3 + Math.floor(Math.random() * 3));
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        document.getElementById('deliveryDate').textContent = deliveryDate.toLocaleDateString('de-DE', options);
+        
+        // Render checkout summary
+        const checkoutSummary = document.getElementById('checkoutSummary');
+        const checkoutSubtotal = document.getElementById('checkoutSubtotal');
+        const checkoutTotal = document.getElementById('checkoutTotal');
+        
+        const total = this.getCartTotal();
+        
+        if (checkoutSummary) {
+            const allItems = this.cart.flatMap(look => look.items);
+            checkoutSummary.innerHTML = allItems.map(item => {
+                const category = item.id ? item.id.split('-')[0] : '';
+                const thumbUrl = item.image ? `/static/products/${category}/${item.image}` : '';
+                return `
+                    <div class="checkout-summary-item">
+                        ${thumbUrl ? `<img src="${thumbUrl}" alt="${item.name}" class="checkout-summary-image">` : ''}
+                        <div class="checkout-summary-details">
+                            <div class="checkout-summary-name">${item.name}</div>
+                            <div class="checkout-summary-brand">${item.brand}</div>
+                        </div>
+                        <span class="checkout-summary-price">${item.price.toFixed(2).replace('.', ',')} €</span>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        if (checkoutSubtotal) {
+            checkoutSubtotal.textContent = total.toFixed(2).replace('.', ',') + ' €';
+        }
+        
+        if (checkoutTotal) {
+            checkoutTotal.textContent = total.toFixed(2).replace('.', ',') + ' €';
+        }
+        
+        // Close cart and show checkout
+        this.closeCart();
+        document.getElementById('checkoutModal').classList.add('active');
+        
+        // Clear cart after "order"
+        this.cart = [];
+        this.saveCart();
+    }
+
+    closeCheckout() {
+        document.getElementById('checkoutModal').classList.remove('active');
     }
 }
 
