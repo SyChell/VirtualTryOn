@@ -62,10 +62,10 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid #333;
     position: sticky;
     top: 0;
-    background: #fff;
+    background: #1a1a1a;
     z-index: 100;
 }
 
@@ -79,7 +79,7 @@ body {
     border: none;
     font-size: 1rem;
     font-weight: 500;
-    color: #666;
+    color: #999;
     cursor: pointer;
     padding: 0.5rem 0;
     position: relative;
@@ -87,11 +87,11 @@ body {
 }
 
 .nav-item:hover {
-    color: #1a1a1a;
+    color: #fff;
 }
 
 .nav-item.active {
-    color: #1a1a1a;
+    color: #fff;
 }
 
 .nav-item.active::after {
@@ -101,7 +101,7 @@ body {
     left: 0;
     right: 0;
     height: 2px;
-    background: #1a1a1a;
+    background: #fff;
 }
 
 .header-actions {
@@ -114,7 +114,7 @@ body {
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    color: #1a1a1a;
+    color: #fff;
     transition: opacity 0.2s;
 }
 
