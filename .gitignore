@@ -26,6 +26,7 @@ output_*.jpeg
 output_*.jpg
 output_*.png
 generated_images/
+static/generated/
 
 # IDE
 .vscode/
