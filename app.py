@@ -6,6 +6,7 @@ Flask backend serving the frontend and API endpoints.
 import os
 import json
 import uuid
+import hashlib
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_cors import CORS
 from agent import generate_outfit_image
@@ -92,16 +93,32 @@ def get_product(product_id):
     return jsonify({"error": "Product not found"}), 404
 
 
+def generate_combination_id(item_ids: list) -> str:
+    """
+    Generate a deterministic combination_id based on the item IDs.
+    Same items will always produce the same combination_id.
+    """
+    sorted_ids = sorted(item_ids)
+    items_string = "|".join(sorted_ids)
+    hash_digest = hashlib.sha256(items_string.encode()).hexdigest()
+    return f"{hash_digest[:8]}-{hash_digest[8:12]}-{hash_digest[12:16]}-{hash_digest[16:20]}-{hash_digest[20:32]}"
+
+
 @app.route('/api/generate', methods=['POST'])
 def generate_look():
-    """Generate outfit image from selected products."""
+    """Generate outfit image from selected products (with caching)."""
     data = request.json
     selected_items = data.get('items', [])
     
     if not selected_items:
         return jsonify({"error": "No items selected"}), 400
     
-    # Map product IDs to image paths
+    # Generate deterministic combination_id for caching
+    combination_id = generate_combination_id(selected_items)
+    cached_filename = f"look_{combination_id}.jpeg"
+    cached_path = os.path.join(GENERATED_FOLDER, cached_filename)
+    
+    # Map product IDs to image paths and product info
     image_paths = []
     products_info = []
     
@@ -109,7 +126,6 @@ def generate_look():
         for category_id, category in CATALOG.items():
             for product in category["products"]:
                 if product["id"] == item_id:
-                    # Check if product image exists in category subfolder
                     img_path = os.path.join(PRODUCTS_FOLDER, category_id, product["image"])
                     if os.path.exists(img_path):
                         image_paths.append(img_path)
@@ -119,19 +135,28 @@ def generate_look():
     if not image_paths:
         return jsonify({"error": "No images available for selected products"}), 400
     
-    # Generate unique output filename
-    output_filename = f"generated_{uuid.uuid4().hex[:8]}.jpeg"
-    output_path = os.path.join(GENERATED_FOLDER, output_filename)
-    
-    try:
-        print(f"🔄 Generating look with {len(image_paths)} images...")
-        generate_outfit_image(image_paths, output_path)
-        
-        # Return the generated image info
+    # Check if this combination was already generated (cache hit)
+    if os.path.exists(cached_path):
+        print(f"✅ Cache hit! Returning existing image for combination {combination_id}")
         return jsonify({
             "success": True,
-            "image": f"/static/generated/{output_filename}",
-            "products": products_info
+            "image": f"/static/generated/{cached_filename}",
+            "products": products_info,
+            "cached": True,
+            "combination_id": combination_id
+        })
+    
+    # Cache miss - generate new image
+    try:
+        print(f"🔄 Generating new look for combination {combination_id}...")
+        generate_outfit_image(image_paths, cached_path)
+        
+        return jsonify({
+            "success": True,
+            "image": f"/static/generated/{cached_filename}",
+            "products": products_info,
+            "cached": False,
+            "combination_id": combination_id
         })
     except Exception as e:
         print(f"❌ Error generating look: {e}")

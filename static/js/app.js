@@ -396,7 +396,7 @@ class VirtualTryOnApp {
             const items = Array.from(this.selectedItems.values());
             const itemIds = Array.from(this.selectedItems.keys());
             
-            // Start BOTH operations in parallel
+            // Start image generation (may return cached result)
             const generatePromise = fetch('/api/generate', {
                 method: 'POST',
                 headers: {
@@ -407,10 +407,7 @@ class VirtualTryOnApp {
                 })
             });
             
-            // Send combination to Fabric in parallel (don't await yet)
-            const fabricPromise = this.sendCombinationToFabric(items);
-            
-            // Wait for image generation
+            // Wait for image generation (or cache hit)
             const response = await generatePromise;
 
             if (!response.ok) {
@@ -421,16 +418,25 @@ class VirtualTryOnApp {
             const result = await response.json();
             this.generatedLook = result;
             
-            // Now get the Fabric result (should already be done or nearly done)
-            fabricPromise
-                .then(combinationResult => {
-                    if (combinationResult?.combination_id) {
-                        this.generatedLook.combination_id = combinationResult.combination_id;
-                        this.saveLookToSession(this.generatedLook);
-                        console.log('✅ Combination saved to Fabric:', combinationResult.combination_id);
-                    }
-                })
-                .catch(err => console.warn('Could not save combination to Fabric:', err));
+            // Log cache status
+            if (result.cached) {
+                console.log('⚡ Loaded from cache:', result.combination_id);
+            } else {
+                console.log('🎨 Generated new look:', result.combination_id);
+            }
+            
+            // Only send to Fabric if this is a NEW combination (not cached)
+            if (!result.cached) {
+                this.sendCombinationToFabric(items)
+                    .then(combinationResult => {
+                        if (combinationResult?.combination_id) {
+                            this.generatedLook.combination_id = combinationResult.combination_id;
+                            this.saveLookToSession(this.generatedLook);
+                            console.log('✅ Combination saved to Fabric:', combinationResult.combination_id);
+                        }
+                    })
+                    .catch(err => console.warn('Could not save combination to Fabric:', err));
+            }
             
             this.saveLookToSession(result);
             this.showResult(result);
