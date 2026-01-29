@@ -1,5 +1,11 @@
-azure-identity
-requests
-python-dotenv
+# Web Framework
 flask
 flask-cors
+
+# Azure Services
+azure-identity
+azure-eventhub
+
+# Utilities
+requests
+python-dotenv

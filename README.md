@@ -28,12 +28,17 @@ pip install -r requirements.txt
 
 ### 2. Configure Environment
 
-Create a `.env` file:
+Copy `.env.example` to `.env` and fill in your values:
 
 ```env
-AOAI_API_BASE=https://your-resource.openai.azure.com
+# Required: Azure OpenAI
+AOAI_API_BASE=https://your-resource.cognitiveservices.azure.com
 AOAI_DEPLOYMENT_NAME=gpt-image-1
 AOAI_API_VERSION=2025-04-01-preview
+
+# Optional: Microsoft Fabric Eventstreams
+FABRIC_EH_SALES_CONNECTION_STRING=Endpoint=sb://...
+FABRIC_EH_COMBINATIONS_CONNECTION_STRING=Endpoint=sb://...
 ```
 
 ### 3. Login to Azure
@@ -54,23 +59,18 @@ Open **http://localhost:5000** in your browser.
 
 ```
 VirtualTryOn/
-├── app.py                  # Flask web server
-├── agent.py                # AI image generation
-├── main.ipynb              # Development notebook
+├── app.py                  # Flask web server & API endpoints
+├── agent.py                # AI image generation (Azure OpenAI)
+├── fabric_client.py        # Microsoft Fabric Eventstream integration
 ├── requirements.txt        # Python dependencies
 ├── .env                    # Configuration (not committed)
+├── .env.example            # Configuration template
 ├── data/
 │   └── catalog.json        # Product catalog
 ├── static/
 │   ├── css/styles.css      # Styling
 │   ├── js/app.js           # Frontend logic
 │   ├── products/           # Product images by category
-│   │   ├── hosen/
-│   │   ├── jacken/
-│   │   ├── kleider/
-│   │   ├── pullover/
-│   │   ├── roecke/
-│   │   └── schuhe/
 │   └── generated/          # Generated outfit images
 └── templates/
     └── index.html          # Main page
@@ -82,11 +82,14 @@ VirtualTryOn/
 2. **Generate Look** - Click "Look Generieren" to create an outfit
 3. **AI Processing** - Azure OpenAI combines clothing images into one photo
 4. **Add to Cart** - Select sizes and save the look to your cart
+5. **Place Order** - Order data is sent to Microsoft Fabric for analytics
 
 ### Technical Flow
 
 ```
-User selects items → Flask API → Azure OpenAI Image Edit API → Generated outfit
+User selects items → Flask API → Azure OpenAI → Generated outfit
+                  ↓
+         Microsoft Fabric Eventstreams (combinations + orders)
 ```
 
 ## 📓 Development Notebook
@@ -99,11 +102,13 @@ Use `main.ipynb` for testing the AI generation independently:
 
 ## 🔧 Configuration
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `AOAI_API_BASE` | Azure OpenAI endpoint | Required |
-| `AOAI_DEPLOYMENT_NAME` | Model deployment name | `gpt-image-1` |
-| `AOAI_API_VERSION` | API version | `2025-04-01-preview` |
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `AOAI_API_BASE` | Azure OpenAI endpoint | Yes |
+| `AOAI_DEPLOYMENT_NAME` | Model deployment name | Yes |
+| `AOAI_API_VERSION` | API version | Yes |
+| `FABRIC_EH_SALES_CONNECTION_STRING` | Fabric Sales Eventstream connection string | No |
+| `FABRIC_EH_COMBINATIONS_CONNECTION_STRING` | Fabric Combinations Eventstream connection string | No |
 
 ## 🐛 Troubleshooting
 
@@ -120,11 +125,50 @@ Check that product images exist in `static/products/<category>/` and filenames m
 - Verify GPT-Image-1 is deployed in Azure OpenAI
 - Check Azure CLI authentication: `az account show`
 
+### Fabric events not sending
+- Check that connection strings are set in `.env`
+- Verify the Eventstream "Custom App" source is configured in Fabric
+
+## 🔗 Microsoft Fabric Integration
+
+The app sends data to Microsoft Fabric Eventstreams for analytics:
+
+- **Combinations Stream** - Tracks outfit combinations users generate
+- **Sales Stream** - Tracks orders placed
+
+### Data Models
+
+**Combination:**
+```json
+{
+  "combination_id": "abc123...",
+  "user_id": "user-xyz",
+  "items": [{"product_id": "...", "name": "...", "price": 99.95, "color": "..."}]
+}
+```
+
+**Order:**
+```json
+{
+  "order_id": "uuid",
+  "combination_id": "abc123...",
+  "user_id": "user-xyz",
+  "items": [...]
+}
+```
+
+### Getting Connection Strings
+
+1. Open Microsoft Fabric workspace
+2. Go to your Eventstream
+3. Add a **Custom App** source
+4. Copy the connection string from the source settings
+
 ## 📦 Dependencies
 
 - **Flask** - Web framework
 - **Flask-CORS** - Cross-origin support
-- **azure-identity** - Azure authentication
+- **azure-eventhub** - Microsoft Fabric Eventstream integration
 - **requests** - HTTP client
 - **python-dotenv** - Environment variables
 

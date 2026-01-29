@@ -135,6 +135,7 @@ class VirtualTryOnApp {
         // Checkout
         document.getElementById('checkoutBtn')?.addEventListener('click', () => this.showCheckout());
         document.getElementById('closeCheckoutBtn')?.addEventListener('click', () => this.closeCheckout());
+        document.getElementById('closeCheckoutX')?.addEventListener('click', () => this.closeCheckout());
     }
 
     async loadProducts(category) {
@@ -392,15 +393,25 @@ class VirtualTryOnApp {
         this.showLoading();
 
         try {
-            const response = await fetch('/api/generate', {
+            const items = Array.from(this.selectedItems.values());
+            const itemIds = Array.from(this.selectedItems.keys());
+            
+            // Start BOTH operations in parallel
+            const generatePromise = fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    items: Array.from(this.selectedItems.keys())
+                    items: itemIds
                 })
             });
+            
+            // Send combination to Fabric in parallel (don't await yet)
+            const fabricPromise = this.sendCombinationToFabric(items);
+            
+            // Wait for image generation
+            const response = await generatePromise;
 
             if (!response.ok) {
                 const error = await response.json();
@@ -409,6 +420,18 @@ class VirtualTryOnApp {
 
             const result = await response.json();
             this.generatedLook = result;
+            
+            // Now get the Fabric result (should already be done or nearly done)
+            fabricPromise
+                .then(combinationResult => {
+                    if (combinationResult?.combination_id) {
+                        this.generatedLook.combination_id = combinationResult.combination_id;
+                        this.saveLookToSession(this.generatedLook);
+                        console.log('✅ Combination saved to Fabric:', combinationResult.combination_id);
+                    }
+                })
+                .catch(err => console.warn('Could not save combination to Fabric:', err));
+            
             this.saveLookToSession(result);
             this.showResult(result);
         } catch (error) {
@@ -417,6 +440,33 @@ class VirtualTryOnApp {
         } finally {
             this.hideLoading();
         }
+    }
+
+    async sendCombinationToFabric(items) {
+        try {
+            const response = await fetch('/api/combination', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: this.getUserId(),
+                    items: items
+                })
+            });
+            return await response.json();
+        } catch (error) {
+            console.warn('Failed to send combination to Fabric:', error);
+            return null;
+        }
+    }
+
+    getUserId() {
+        // Get or create a persistent user ID
+        let userId = localStorage.getItem('virtualTryOnUserId');
+        if (!userId) {
+            userId = 'user-' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('virtualTryOnUserId', userId);
+        }
+        return userId;
     }
 
     showResult(result) {
@@ -518,6 +568,7 @@ class VirtualTryOnApp {
             id: lookId,
             items: lookItems,
             image: this.generatedLook?.image,
+            combination_id: this.generatedLook?.combination_id, // Include Fabric combination ID
             addedAt: new Date().toISOString()
         });
         
@@ -680,6 +731,19 @@ class VirtualTryOnApp {
     showCheckout() {
         if (this.cart.length === 0) return;
         
+        // Collect all items and combination IDs from the cart
+        const allItems = this.cart.flatMap(look => look.items);
+        const combinationIds = this.cart.map(look => look.combination_id).filter(Boolean);
+        
+        // Send order to Fabric (non-blocking)
+        this.sendOrderToFabric(allItems, combinationIds.length > 0 ? combinationIds[0] : null)
+            .then(orderResult => {
+                if (orderResult?.order_id) {
+                    console.log('✅ Order sent to Fabric:', orderResult.order_id);
+                }
+            })
+            .catch(err => console.warn('Could not send order to Fabric:', err));
+        
         // Generate order number
         const orderNumber = Math.floor(100000 + Math.random() * 900000);
         document.getElementById('orderNumber').textContent = orderNumber;
@@ -698,7 +762,6 @@ class VirtualTryOnApp {
         const total = this.getCartTotal();
         
         if (checkoutSummary) {
-            const allItems = this.cart.flatMap(look => look.items);
             checkoutSummary.innerHTML = allItems.map(item => {
                 const category = item.id ? item.id.split('-')[0] : '';
                 const thumbUrl = item.image ? `/static/products/${category}/${item.image}` : '';
@@ -730,6 +793,24 @@ class VirtualTryOnApp {
         // Clear cart after "order"
         this.cart = [];
         this.saveCart();
+    }
+
+    async sendOrderToFabric(items, combinationId) {
+        try {
+            const response = await fetch('/api/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: this.getUserId(),
+                    combination_id: combinationId,
+                    items: items
+                })
+            });
+            return await response.json();
+        } catch (error) {
+            console.warn('Failed to send order to Fabric:', error);
+            return null;
+        }
     }
 
     closeCheckout() {

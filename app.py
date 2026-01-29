@@ -9,6 +9,7 @@ import uuid
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_cors import CORS
 from agent import generate_outfit_image
+from fabric_client import get_fabric_client
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
 CORS(app)
@@ -142,6 +143,77 @@ def serve_product_image(category, filename):
     """Serve product images from category subfolders."""
     category_path = os.path.join(PRODUCTS_FOLDER, category)
     return send_from_directory(category_path, filename)
+
+
+@app.route('/api/combination', methods=['POST'])
+def save_combination():
+    """
+    Save a combination (outfit) to Fabric Event Hub.
+    Called when a user generates a look.
+    """
+    data = request.json
+    user_id = data.get('user_id', f'anonymous-{uuid.uuid4().hex[:8]}')
+    items = data.get('items', [])
+    
+    if not items:
+        return jsonify({"error": "No items provided"}), 400
+    
+    try:
+        fabric_client = get_fabric_client()
+        combination_id = fabric_client.send_combination(user_id, items)
+        
+        return jsonify({
+            "success": True,
+            "combination_id": combination_id,
+            "message": "Combination saved to Fabric"
+        })
+    except Exception as e:
+        print(f"❌ Error saving combination: {e}")
+        # Don't fail the request if Fabric is unavailable
+        return jsonify({
+            "success": False,
+            "combination_id": None,
+            "error": str(e)
+        }), 200  # Return 200 so the app continues to work
+
+
+@app.route('/api/order', methods=['POST'])
+def place_order():
+    """
+    Place an order and send to Fabric Event Hub (Sales stream).
+    """
+    data = request.json
+    user_id = data.get('user_id', f'anonymous-{uuid.uuid4().hex[:8]}')
+    combination_id = data.get('combination_id')
+    items = data.get('items', [])
+    
+    if not items:
+        return jsonify({"error": "No items provided"}), 400
+    
+    try:
+        fabric_client = get_fabric_client()
+        
+        # If no combination_id provided, create one first
+        if not combination_id:
+            combination_id = fabric_client.send_combination(user_id, items)
+        
+        # Send the order
+        order_id = fabric_client.send_order(user_id, combination_id, items)
+        
+        return jsonify({
+            "success": True,
+            "order_id": order_id,
+            "combination_id": combination_id,
+            "message": "Order placed successfully"
+        })
+    except Exception as e:
+        print(f"❌ Error placing order: {e}")
+        # Return success anyway so the user sees the confirmation
+        return jsonify({
+            "success": False,
+            "order_id": str(uuid.uuid4()),  # Generate a local order ID
+            "error": str(e)
+        }), 200
 
 
 if __name__ == '__main__':
